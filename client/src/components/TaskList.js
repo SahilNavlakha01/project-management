@@ -62,20 +62,20 @@ const TaskList = () => {
   }, [projectId]);
 
   // Update UI with backend response for toggle (cycle status)
-  const handleToggle = async (taskId) => {
-    setError('');
-    setSuccess('');
-    try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}/toggle`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      setTasks((prev) => prev.map(t => t._id === taskId ? res.data : t));
-      message.success('Task status updated!');
-    } catch (err) {
-      message.error('Failed to toggle task.');
-      fetchTasks();
-    }
-  };
+  // const handleToggle = async (taskId) => {
+  //   setError('');
+  //   setSuccess('');
+  //   try {
+  //     const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}/toggle`, {}, {
+  //       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  //     });
+  //     setTasks((prev) => prev.map(t => t._id === taskId ? res.data : t));
+  //     message.success('Task status updated!');
+  //   } catch (err) {
+  //     message.error('Failed to toggle task.');
+  //     fetchTasks();
+  //   }
+  // };
 
   const handleAdd = async (e) => {
     e.preventDefault();
