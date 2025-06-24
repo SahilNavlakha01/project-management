@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.ant-message {
+  z-index: 9999 !important;
+  top: 80px !important;
+}
+
+.ant-card {
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px #e6e6e6 !important;
+}
+
+.ant-btn-link {
+  font-weight: 500;
+}
+
+.ant-tag {
+  border-radius: 8px !important;
+  font-size: 15px !important;
+}
