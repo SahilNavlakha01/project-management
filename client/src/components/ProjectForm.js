@@ -13,7 +13,7 @@ const ProjectForm = () => {
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:5000/api/projects/${id}`, {
+      axios.get(`${process.env.REACT_APP_API_URL}/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       }).then(res => {
         setTitle(res.data.title);
@@ -30,12 +30,12 @@ const ProjectForm = () => {
     e.preventDefault();
     try {
       if (id) {
-        await axios.put(`http://localhost:5000/api/projects/${id}`, { title, description }, {
+        await axios.put(`${process.env.REACT_APP_API_URL}/api/projects/${id}`, { title, description }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         message.success('Project updated!');
       } else {
-        await axios.post('http://localhost:5000/api/projects', { title, description }, {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/projects`, { title, description }, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         message.success('Project created!');
