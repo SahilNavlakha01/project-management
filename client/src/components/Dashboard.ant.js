@@ -35,7 +35,7 @@ const Dashboard = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get("http://localhost:5000/api/projects", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/projects`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProjects(res.data);
@@ -44,7 +44,7 @@ const Dashboard = () => {
         res.data.map(async (project) => {
           try {
             const taskRes = await axios.get(
-              `http://localhost:5000/api/tasks/project/${project._id}`,
+              `${process.env.REACT_APP_API_URL}/api/tasks/project/${project._id}`,
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -83,7 +83,7 @@ const Dashboard = () => {
   const handleDeleteProject = async (projectId) => {
     message.loading({ content: 'Deleting project...', key: 'deleteProject' });
     try {
-      await axios.delete(`http://localhost:5000/api/projects/${projectId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setProjects((prev) => prev.filter((p) => p._id !== projectId));
