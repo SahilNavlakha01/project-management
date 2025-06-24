@@ -46,7 +46,7 @@ const TaskList = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.get(`http://localhost:5000/api/tasks/project/${projectId}`, {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/tasks/project/${projectId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setTasks(res.data);
@@ -82,7 +82,7 @@ const TaskList = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.post('http://localhost:5000/api/tasks', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/tasks`, {
         title,
         description,
         status,
@@ -104,7 +104,7 @@ const TaskList = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       message.success('Task deleted!');
@@ -127,7 +127,7 @@ const TaskList = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${editId}`, {
+      const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/tasks/${editId}`, {
         title: editTitle,
         description: editDescription,
         status: editStatus,
