@@ -20,6 +20,7 @@ const Signup = () => {
       navigate('/');
     } catch (err) {
       message.error(err.response?.data?.message || 'Signup failed');
+      setError(err.response?.data?.message);
     }
   };
 
