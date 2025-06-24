@@ -1,0 +1,28 @@
+{
+  "name": "project-management",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SahilNavlakha01/project-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SahilNavlakha01/project-management/issues"
+  },
+  "homepage": "https://github.com/SahilNavlakha01/project-management#readme",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.10",
+    "antd": "^5.26.1",
+    "axios": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "react-router-dom": "^7.6.2",
+    "tailwindcss": "^4.1.10"
+  }
+}
