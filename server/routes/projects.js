@@ -101,27 +101,4 @@ router.get('/with-users-tasks', auth, requireRole(['admin']), async (req, res) =
   }
 });
 
-// Client-side function to handle project deletion
-const handleDeleteProject = async (projectId) => {
-  // Optimistically update UI
-  setProjects((prev) => prev.filter((p) => p._id !== projectId));
-  setTasks((prev) => {
-    const newTasks = { ...prev };
-    delete newTasks[projectId];
-    return newTasks;
-  });
-  try {
-    await axios.delete(`http://localhost:5000/api/projects/${projectId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-    message.success("Project deleted successfully!");
-    // Optionally re-fetch in background for consistency
-    fetchProjectsAndTasks();
-  } catch (err) {
-    message.error("Failed to delete project.");
-    // Optionally, revert UI if error occurs
-    fetchProjectsAndTasks();
-  }
-};
-
 module.exports = router;

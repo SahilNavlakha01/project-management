@@ -66,7 +66,7 @@ const TaskList = () => {
   //   setError('');
   //   setSuccess('');
   //   try {
-  //     const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}/toggle`, {}, {
+  //     const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/tasks/${taskId}/toggle`, {}, {
   //       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   //     });
   //     setTasks((prev) => prev.map(t => t._id === taskId ? res.data : t));
@@ -243,7 +243,7 @@ const TaskList = () => {
                               setError('');
                               setSuccess('');
                               try {
-                                const res = await axios.put(`http://localhost:5000/api/tasks/${task._id}`, {
+                                const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/tasks/${task._id}`, {
                                   title: task.title,
                                   description: task.description,
                                   status: e.target.value,
