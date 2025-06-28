@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Button, Flex, Spin } from "antd";
 import { message } from "antd";
 import Layout from "./Layout";
 import { AuthContext } from "../context/AuthContext";
@@ -27,9 +28,12 @@ const Dashboard = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/projects`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/projects`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       setProjects(res.data);
 
       const tasksObj = {};
@@ -63,9 +67,12 @@ const Dashboard = () => {
 
   const handleDeleteProject = async (projectId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       message.success("Project deleted successfully!");
       fetchProjectsAndTasks();
     } catch (err) {
@@ -102,7 +109,11 @@ const Dashboard = () => {
         />
       </div>
       {loading ? (
-        <div className="text-center text-gray-500">Loading projects...</div>
+        <div className="text-center text-gray-500 ">
+          {/* <Flex align="center" > */}
+            <Spin size="small" />
+          {/* </Flex> */}
+        </div>
       ) : error ? (
         <div className="text-center text-red-500">{error}</div>
       ) : (
@@ -153,7 +164,7 @@ const Dashboard = () => {
                 <p className="text-gray-600 dark:text-gray-300 mb-2">
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-4 mb-2 dark:text-white" >
+                <div className="flex flex-wrap gap-4 mb-2 dark:text-white">
                   {statusLabels.map((status) => (
                     <span
                       key={status}
@@ -178,22 +189,25 @@ const Dashboard = () => {
                   >
                     View Tasks
                   </Link>
-                  {(user && (user.role === "admin" || user.role === "manager")) && (
-                    <>
-                      <Link
-                        to={`/project/edit/${project._id}`}
-                        className="text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline font-medium mt-2"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteProject(project._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-semibold mt-1"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
+                  {user &&
+                    (user.role === "admin" || user.role === "manager") && (
+                      <>
+                        <Link
+                          to={`/project/edit/${project._id}`}
+                          // className="text-gray-500 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline font-medium mt-2"
+                        >
+                          <Button type="primary" className="bg-bule-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-semibold mt-1">
+                          Edit
+                          </Button>
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteProject(project._id)}
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg font-semibold mt-1"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                 </div>
               </div>
             );
