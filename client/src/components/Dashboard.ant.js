@@ -129,7 +129,7 @@ const Dashboard = () => {
         </Col>
       </Row>
       {loading ? (
-        <div style={{ textAlign: 'center', marginTop: 48 }}><Spin size="large" /></div>
+        <div style={{ textAlign: 'center', marginTop: 48 }}><Spin size="small" /></div>
       ) : error ? (
         <div style={{ textAlign: 'center', color: '#ff4d4f' }}>{error}</div>
       ) : filteredProjects.length === 0 ? (
