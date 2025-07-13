@@ -10,7 +10,8 @@ const taskSchema = new mongoose.Schema({
   },
   completedAt: { type: Date },
   project: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // assigned user
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // creator
   createdAt: { type: Date, default: Date.now },
 });
 

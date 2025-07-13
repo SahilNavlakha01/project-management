@@ -12,7 +12,7 @@ router.post(
   validateFields(["title", "project"]),
   async (req, res, next) => {
     try {
-      const { title, description, project, status } = req.body;
+      const { title, description, project, status, user: assignedUser } = req.body;
       // Allow any user to create a task for any existing project
       const projectExists = await Project.findById(project);
       if (!projectExists)
@@ -22,7 +22,8 @@ router.post(
         description,
         status: status || "To Do",
         project,
-        user: req.user.userId,
+        user: assignedUser || req.user.userId, // assigned user
+        createdBy: req.user.userId, // creator
       });
       await task.save();
       res.status(201).json(task);
@@ -36,19 +37,16 @@ router.post(
 router.get("/project/:projectId", auth, async (req, res) => {
   try {
     const project = await Project.findById(req.params.projectId);
-    if (!project) return res.json([]); // Return empty array if project not found
-    // Populate user field to get user name and email
-    const tasks = await Task.find({ project: req.params.projectId }).populate(
-      "user",
-      "name email role"
-    );
+    if (!project) return res.json([]); 
+    const tasks = await Task.find({ project: req.params.projectId })
+      .populate("user", "name email role")
+      .populate("createdBy", "name email role");
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Get all tasks for the authenticated user
 router.get("/", auth, async (req, res, next) => {
   try {
     const tasks = await Task.find({ user: req.user.userId });
@@ -61,8 +59,11 @@ router.get("/", auth, async (req, res, next) => {
 // Update a task
 router.put("/:id", auth, async (req, res, next) => {
   try {
-    const { title, description, status } = req.body;
+    const { title, description, status, user: assignedUser } = req.body;
     let update = { title, description };
+    if (assignedUser) {
+      update.user = assignedUser;
+    }
     if (status) {
       update.status = status;
       if (status === "Completed") {
