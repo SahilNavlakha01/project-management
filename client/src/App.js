@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard';
 import ProjectForm from './components/ProjectForm';
 import TaskList from './components/TaskList';
 import PrivateRoute from './components/PrivateRoute';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 function AppRoutes() {
   const { user, authLoading } = useContext(AuthContext);
@@ -24,6 +24,28 @@ function AppRoutes() {
 }
 
 function App() {
+  // Theme persistence and initialization
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else if (savedTheme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, []);
+
+  // Optional: Provide a function to toggle theme (can be used in a button)
+  // window.toggleTheme = () => {
+  //   const isDark = document.documentElement.classList.toggle('dark');
+  //   localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  // };
+
   return (
     <AuthProvider>
       <Router>
@@ -32,5 +54,6 @@ function App() {
     </AuthProvider>
   );
 }
+
 
 export default App;
