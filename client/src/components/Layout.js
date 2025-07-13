@@ -28,11 +28,23 @@ const Layout = ({ children }) => {
     navigate('/login');
   };
 
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 flex flex-col">
-      <header className="bg-white dark:bg-gray-950 shadow-md py-4 px-8 flex items-center justify-between sticky top-0 z-20 border-b border-gray-100 dark:border-gray-800">
+      <header className="bg-white dark:bg-gray-950 shadow-md py-4 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-20 border-b border-gray-100 dark:border-gray-800">
         <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-300 tracking-tight">Task Pilot</Link>
-        <nav className="space-x-4 flex items-center">
+        {/* Hamburger for mobile */}
+        <button
+          className="sm:hidden flex items-center p-2 border rounded-lg text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Toggle navigation menu"
+        >
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        {/* Desktop nav */}
+        <nav className="hidden sm:flex space-x-4 items-center">
           <button
             onClick={() => setDark((d) => !d)}
             className="mr-2 px-2 py-1 rounded bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
@@ -60,8 +72,39 @@ const Layout = ({ children }) => {
             </>
           )}
         </nav>
+        {/* Mobile nav dropdown */}
+        {menuOpen && (
+          <nav className="absolute top-16 left-0 w-full bg-white dark:bg-gray-950 shadow-2xl border-t border-gray-100 dark:border-gray-800 flex flex-col items-stretch px-4 py-5 space-y-4 sm:hidden animate-fade-in z-30 rounded-b-2xl transition-all duration-200">
+            <button
+              onClick={() => setDark((d) => !d)}
+              className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 transition w-full text-left text-base font-medium mb-1"
+              aria-label="Toggle dark mode"
+            >
+              {dark ? '🌙 Dark' : '☀️ Light'}
+            </button>
+            <Link to="/" className="block text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-semibold w-full px-2 py-2 rounded-lg transition" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+            {user && (user.role === 'admin' || user.role === 'manager') && (
+              <Link to="/project/new" className="block text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-semibold w-full px-2 py-2 rounded-lg transition" onClick={() => setMenuOpen(false)}>New Project</Link>
+            )}
+            {user ? (
+              <>
+                <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-lg w-full mb-1">
+                  <UserIcon name={user.name || user.email} />
+                  <span className="text-gray-700 dark:text-gray-200 font-medium">{user.name || user.email}</span>
+                  <span className="ml-2 text-xs text-blue-600 dark:text-blue-300 font-bold uppercase">{user.role}</span>
+                </span>
+                <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="bg-red-500 hover:bg-red-600 text-white px-3 py-3 rounded-lg transition w-full text-base font-semibold">Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="block text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-semibold w-full px-2 py-2 rounded-lg transition" onClick={() => setMenuOpen(false)}>Login</Link>
+                <Link to="/signup" className="block text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 font-semibold w-full px-2 py-2 rounded-lg transition" onClick={() => setMenuOpen(false)}>Signup</Link>
+              </>
+            )}
+          </nav>
+        )}
       </header>
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 bg-gradient-to-br from-white to-blue-50 dark:from-gray-950 dark:to-gray-900 transition-colors duration-300 rounded-xl shadow-lg">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-2 sm:px-4 py-6 sm:py-8 bg-gradient-to-br from-white to-blue-50 dark:from-gray-950 dark:to-gray-900 transition-colors duration-300 rounded-xl shadow-lg w-full">
         {children}
       </main>
       <footer className="bg-white dark:bg-gray-950 text-center py-4 text-gray-400 dark:text-gray-500 text-sm border-t border-gray-100 dark:border-gray-800 mt-8">

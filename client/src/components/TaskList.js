@@ -117,12 +117,12 @@ const TaskList = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4">
-      <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-8 space-y-8 border border-gray-100 dark:border-gray-800">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Tasks</h1>
-        <form onSubmit={handleAdd} className="grid md:grid-cols-4 gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-6 px-2 sm:px-4">
+      <div className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-4 sm:p-6 md:p-8 space-y-8 border border-gray-100 dark:border-gray-800">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Tasks</h1>
+        <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           <input
-            className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
             type="text"
             placeholder="Title"
             value={title}
@@ -130,14 +130,14 @@ const TaskList = () => {
             required
           />
           <input
-            className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
             type="text"
             placeholder="Description"
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
           <select
-            className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
             value={status}
             onChange={e => setStatus(e.target.value)}
           >
@@ -145,7 +145,7 @@ const TaskList = () => {
           </select>
           <button
             type="submit"
-            className="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-xl hover:bg-indigo-700"
+            className="w-full bg-indigo-600 text-white font-semibold px-6 py-2 rounded-xl hover:bg-indigo-700"
           >
             Add Task
           </button>
@@ -161,9 +161,9 @@ const TaskList = () => {
               const isOwner = user && task.user && (task.user._id === user.id);
               const isAdmin = user && user.role === 'admin';
               return (
-                <div key={task._id} className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md">
+                <div key={task._id} className="p-3 sm:p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md">
                   {editId === task._id && (isOwner || isAdmin) ? (
-                    <form onSubmit={handleUpdate} className="flex flex-col md:flex-row gap-4">
+                    <form onSubmit={handleUpdate} className="flex flex-col md:flex-row gap-2 md:gap-4">
                       <input
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg dark:bg-gray-900 dark:text-gray-100"
                         value={editTitle}
@@ -182,22 +182,24 @@ const TaskList = () => {
                       >
                         {statusOrder.map(s => <option key={s}>{s}</option>)}
                       </select>
-                      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
-                      <button onClick={() => setEditId(null)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
+                      <div className="flex gap-2 mt-2 md:mt-0">
+                        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-lg">Save</button>
+                        <button type="button" onClick={() => setEditId(null)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</button>
+                      </div>
                     </form>
                   ) : (
-                    <div className="flex justify-between items-start flex-col md:flex-row gap-4">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 md:gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className={`px-3 py-1 rounded-full text-xs text-white font-semibold ${statusColors[task.status]}`}>{task.status}</span>
-                          <h2 className="font-semibold text-xl text-gray-900 dark:text-white">{task.title}</h2>
+                          <h2 className="font-semibold text-lg sm:text-xl text-gray-900 dark:text-white break-words">{task.title}</h2>
                         </div>
-                        <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">{task.description}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-300 mt-1 break-words">{task.description}</p>
                         <p className="text-sm text-indigo-600 dark:text-indigo-300 mt-1">Assigned to: {task.user?.name}</p>
                         <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Created: {formatIndianDateTime(task.createdAt)}</p>
                       </div>
                       {(isOwner || isAdmin) && (
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
                           <select
                             className="border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-lg dark:bg-gray-900 dark:text-gray-100"
                             value={task.status}
